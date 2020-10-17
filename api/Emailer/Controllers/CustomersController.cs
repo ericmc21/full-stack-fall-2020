@@ -10,39 +10,39 @@ namespace Emailer.Controllers
     [Route( "[controller]")]
     public class CustomersController : ControllerBase
     {
-        private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<Customer> _repository;
         private readonly ILogger<CustomersController> _logger;
 
-        public CustomersController(IRepository<Customer> customerRepository, ILogger<CustomersController> logger)
+        public CustomersController(IRepository<Customer> repository, ILogger<CustomersController> logger)
         {
             _logger = logger;
-            _customerRepository = customerRepository;
+            _repository = repository;
         }
         
         [HttpGet]
         public async Task<IEnumerable<Customer>> Get()
         {
-            return await _customerRepository.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
 
         [HttpPost]
         public async Task<Customer> Add([FromBody] Customer customer)
         {
-            await _customerRepository.AddAsync(customer);
+            await _repository.AddAsync(customer);
             return customer;
         }
 
         [HttpPut]
         public async Task<Customer> Update([FromBody] Customer customer)
         {
-            await _customerRepository.UpdateAsync(customer);
+            await _repository.UpdateAsync(customer);
             return customer;
         }
 
         [HttpDelete]
         public async Task Delete([FromBody] Customer customer)
         {
-            await _customerRepository.DeleteAsync(customer);
+            await _repository.DeleteAsync(customer);
         }
     }
 }
