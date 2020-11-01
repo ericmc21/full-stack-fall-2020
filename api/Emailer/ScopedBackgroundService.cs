@@ -3,27 +3,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Driver;
 
 namespace Emailer
 {
-    public abstract class ScopedBackgroundService : BackgroundService
+    public class ScopedBackgroundService<T> : BackgroundService
+        where T : IBackgroundTask
     {
-        protected IServiceProvider _serviceProvider;
-        protected IServiceProvider? _scopedServiceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         public ScopedBackgroundService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
-
+            
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             using var scope = _serviceProvider.CreateScope();
-            _scopedServiceProvider = scope.ServiceProvider;
-            await DoWorkAsync(stoppingToken);
+            var scopedTask = (IBackgroundTask)scope.ServiceProvider.GetRequiredService<T>();
+            await scopedTask.ExecuteAsync(stoppingToken);
         }
-
-        protected abstract Task DoWorkAsync(CancellationToken cancellationToken);
     }
 }

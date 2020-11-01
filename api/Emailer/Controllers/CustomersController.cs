@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using System.Dynamic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace Emailer.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route( "[controller]")]
     public class CustomersController : ControllerBase
@@ -19,27 +19,27 @@ namespace Emailer.Controllers
             _repository = repository;
         }
         
-        [HttpGet]
+        [HttpGet(Name = "GetCustomers")]
         public async Task<IEnumerable<Customer>> Get()
         {
             return await _repository.GetAllAsync();
         }
 
-        [HttpPost]
+        [HttpPost(Name = "AddCustomer")]
         public async Task<Customer> Add([FromBody] Customer customer)
         {
             await _repository.AddAsync(customer);
             return customer;
         }
 
-        [HttpPut]
+        [HttpPut(Name = "UpdateCustomer")]
         public async Task<Customer> Update([FromBody] Customer customer)
         {
             await _repository.UpdateAsync(customer);
             return customer;
         }
 
-        [HttpDelete]
+        [HttpDelete(Name = "DeleteCustomer")]
         public async Task Delete([FromBody] Customer customer)
         {
             await _repository.DeleteAsync(customer);

@@ -30,10 +30,8 @@ namespace Emailer
                 // Run Background Services
                 .ConfigureServices((ctx, services) =>
                 {
-                    services.AddHostedService<EmailDeliveryService>();
-                });
-
-
-
+                    services.AddHostedService<ScopedBackgroundService<EmailDeliveryTask>>();
+                })
+        ;
     }
 }

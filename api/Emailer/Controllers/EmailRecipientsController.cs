@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Emailer.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route( "[controller]")]
     public class EmailRecipientsController : Controller
@@ -19,27 +20,27 @@ namespace Emailer.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetEmailRecipients")]
         public async Task<IEnumerable<EmailRecipient>> Get()
         {
             return await _repository.GetAllAsync();
         }
 
-        [HttpPost]
+        [HttpPost(Name = "AddEmailRecipient")]
         public async Task<EmailRecipient> Add([FromBody] EmailRecipient emailRecipient)
         {
             await _repository.AddAsync(emailRecipient);
             return emailRecipient;
         }
 
-        [HttpPut]
+        [HttpPut(Name = "UpdateEmailRecipient")]
         public async Task<EmailRecipient> Update([FromBody] EmailRecipient emailRecipient)
         {
             await _repository.UpdateAsync(emailRecipient);
             return emailRecipient;
         }
 
-        [HttpDelete]
+        [HttpDelete(Name = "DeleteEmailRecipient")]
         public async Task Delete([FromBody] EmailRecipient emailRecipient)
         {
             await _repository.DeleteAsync(emailRecipient);
